@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class CreateReviewRequest {
 
-    private Long userId;
     private Long contentId;
     private String title;
     private ReviewType reviewType;

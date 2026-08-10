@@ -5,8 +5,8 @@ import com.reelview.entity.Review;
 import com.reelview.entity.ReviewType;
 import com.reelview.entity.User;
 import com.reelview.repository.ReviewRepository;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @Service
@@ -40,8 +40,13 @@ public class ReviewService {
         return reviewRepository.findById(id).orElseThrow();
     }
 
-    public Review updateReview(Long id, String title, String description) {
+    public Review updateReview(Long id, String title, String description, User requestUser) {
         Review review = reviewRepository.findById(id).orElseThrow();
+
+        if (!review.getUser().getId().equals(requestUser.getId())) {
+            throw new AccessDeniedException("본인이 작성한 리뷰만 수정할 수 있습니다.");
+        }
+
         review.setTitle(title);
         review.setDescription(description);
         review.setUpdatedAt(LocalDateTime.now());
@@ -49,7 +54,13 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public void deleteReview(Long id) {
+    public void deleteReview(Long id, User requestUser) {
+        Review review = reviewRepository.findById(id).orElseThrow();
+
+        if (!review.getUser().getId().equals(requestUser.getId())) {
+            throw new AccessDeniedException("본인이 작성한 리뷰만 삭제할 수 있습니다.");
+        }
+
         reviewRepository.deleteById(id);
     }
 }

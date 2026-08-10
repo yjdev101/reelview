@@ -10,6 +10,7 @@ import com.reelview.service.ContentService;
 import com.reelview.service.ReviewService;
 import com.reelview.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,9 +27,9 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ReviewResponse createReview(@RequestBody CreateReviewRequest request) {
+    public ReviewResponse createReview(@RequestBody CreateReviewRequest request, Authentication authentication) {
 
-        User user = userService.getUser(request.getUserId());
+        User user = userService.getUserByUsername(authentication.getName());
         Content content = contentService.getContent(request.getContentId());
         Review review = reviewService.createReview(user, content, request.getTitle(), request.getReviewType(), request.getVideoUrl(), request.getVideoFilePath(), request.getDescription());
 
@@ -45,16 +46,17 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
-    public ReviewResponse updateReview(@PathVariable Long id, @Valid @RequestBody UpdateReviewRequest request) {
+    public ReviewResponse updateReview(@PathVariable Long id, @Valid @RequestBody UpdateReviewRequest request, Authentication authentication) {
 
-        Review review = reviewService.updateReview(id, request.getTitle(), request.getDescription());
-        User user = review.getUser();
+        User requestUser = userService.getUserByUsername(authentication.getName());
+        Review review = reviewService.updateReview(id, request.getTitle(), request.getDescription(), requestUser);
         Content content = review.getContent();
-        return new ReviewResponse(review.getId(), user.getId(), content.getId(), review.getTitle(), review.getReviewType(), review.getVideoUrl(), review.getVideoFilePath(), review.getDescription(), review.getCommentSummary(), review.getCreatedAt(), review.getUpdatedAt());
+        return new ReviewResponse(review.getId(), requestUser.getId(), content.getId(), review.getTitle(), review.getReviewType(), review.getVideoUrl(), review.getVideoFilePath(), review.getDescription(), review.getCommentSummary(), review.getCreatedAt(), review.getUpdatedAt());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
+    public void deleteReview(@PathVariable Long id, Authentication authentication) {
+        User requestUser = userService.getUserByUsername(authentication.getName());
+        reviewService.deleteReview(id, requestUser);
     }
 }
