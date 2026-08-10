@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: reelview
+  datasource:
+    url: jdbc:mysql://localhost:3306/reelview
+    username: root
+    password: your_db_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: "your_jwt_secret_key_here"
+  expiration: 3600000
+  refresh-expiration: 1209600000
