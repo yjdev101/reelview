@@ -8,13 +8,16 @@ import com.reelview.repository.ReviewRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final ContentService contentService;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ContentService contentService) {
         this.reviewRepository = reviewRepository;
+        this.contentService = contentService;
     }
 
     public Review createReview(User user, Content content, String title,
@@ -38,6 +41,11 @@ public class ReviewService {
 
     public Review getReview(Long id) {
         return reviewRepository.findById(id).orElseThrow();
+    }
+
+    public List<Review> getReviewsByContent(Long contentId) {
+        contentService.getContent(contentId);
+        return reviewRepository.findByContentId(contentId);
     }
 
     public Review updateReview(Long id, String title, String description, User requestUser) {

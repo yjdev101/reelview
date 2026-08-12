@@ -4,6 +4,7 @@ import com.reelview.entity.Content;
 import com.reelview.entity.ContentType;
 import com.reelview.entity.Genre;
 import com.reelview.repository.ContentRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,9 +46,17 @@ public class ContentService {
     }
 
     public List<Content> getAllContents() {
-        return contentRepository.findAll();
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        return contentRepository.findAll(sort);
     }
 
+    public List<Content> getContentsByGenres(String genreName) {
+        return contentRepository.findByGenres_Name(genreName, Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
+
+    public List<Content> getContentsByType(ContentType type) {
+        return contentRepository.findByType(type, Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
 
     public Content updateContent(Long id, String title, ContentType type, Integer releaseYear, String description) {
         Content content = contentRepository.findById(id).orElseThrow();
