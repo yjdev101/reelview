@@ -37,8 +37,11 @@
 
 ## 남은 리스크 / 확인 필요
 - TMDB API rate limit (요청 빈도 제한) 확인 필요
-- 중복 등록 방지 — 이미 등록된 작품(제목+연도 기준?) 재실행 시 중복 안 되게 처리 필요
+- 중복 등록 방지 — 이미 등록된 작품(제목+연도 기준?) 재실행 시 중복 안 되게 처리 필요 (아직 미구현, 같은 페이지 재요청 시 중복 저장됨)
 - TMDB 이용 시 어트리뷰션 문구("This product uses the TMDB API but is not endorsed or certified by TMDB") 표시 필요 여부 확인
+- **[실제 발견, 2026-08-19] 성인/선정적 콘텐츠 필터링 안 됨**: `/movie/popular` 결과에 성인물 성격의 작품이 섞여 들어옴. TMDB의 `adult` 필드와 `softcore` 필드 둘 다 `false`로 표시되어 있어 두 필드로는 걸러지지 않음 — 실제로 겪은 뒤 수동으로 DB에서 삭제 처리함(1건). 추후 개선 필요: `vote_count` 최소 기준 추가, 또는 장르 조합(예: 로맨스+드라마 저인기작) 휴리스틱, 또는 TMDB `certification` 관련 API 조사.
 
 ## 상태
-설계만 완료, 구현 전. 다음 세션에서 API 키 발급부터 시작.
+**구현 완료 (2026-08-19)**: `TmdbMovieDto`/`TmdbMovieListResponse`(응답 DTO), `TmdbClient`(RestClient로 `/movie/popular` 호출), `TmdbGenreMapper`(TMDB 장르 ID → 우리 장르명, 17/19 커버 — Animation/TV Movie 제외), `TmdbImportService`(페이지 반복 호출 + `ContentService.createContent()` 저장), `POST /admin/tmdb/import?pages=` 엔드포인트. 실제로 1페이지(20개) import 성공 검증 완료(성인물 1건 발견해 수동 삭제).
+
+다음 개선 과제: 중복 방지, 성인 콘텐츠 필터링, 프로덕션에서 쓸 거면 어트리뷰션 문구.
