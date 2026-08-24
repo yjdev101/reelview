@@ -18,6 +18,10 @@ public class UserService {
     }
 
     public User register(String username, String password, String email, String nickname) {
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        }
+
         User user = new User();
 
         user.setUsername(username);

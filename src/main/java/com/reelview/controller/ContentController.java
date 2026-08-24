@@ -53,13 +53,16 @@ public class ContentController {
 
     @GetMapping
     public List<ContentResponse> getAllContents(@RequestParam(required = false) String genre,
-                                                @RequestParam(required = false) ContentType type) {
+                                                @RequestParam(required = false) ContentType type,
+                                                @RequestParam(required = false) String sort) {
 
         List<Content> contents;
         if (genre != null) {
             contents = contentService.getContentsByGenres(genre);
         } else if (type != null) {
             contents = contentService.getContentsByType(type);
+        } else if ("rating".equals(sort)) {
+            contents = contentService.getContentsByRating();
         } else {
             contents = contentService.getAllContents();
         }

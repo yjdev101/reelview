@@ -58,6 +58,10 @@ public class ContentService {
         return contentRepository.findByType(type, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
+    public List<Content> getContentsByRating() {
+        return contentRepository.findAllOrderByAverageRatingDesc();
+    }
+
     public Content updateContent(Long id, String title, ContentType type, Integer releaseYear, String description) {
         Content content = contentRepository.findById(id).orElseThrow();
         content.setTitle(title);
