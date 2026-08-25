@@ -4,6 +4,7 @@ import com.reelview.entity.Genre;
 import com.reelview.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,6 +13,10 @@ public class GenreService {
 
     public GenreService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
+    }
+
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
     }
 
     public Genre findOrCreate(String name) {
