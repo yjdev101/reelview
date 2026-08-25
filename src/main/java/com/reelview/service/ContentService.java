@@ -22,6 +22,10 @@ public class ContentService {
         this.genreService = genreService;
     }
 
+    public boolean existsByTitleAndReleaseYear(String title, Integer releaseYear) {
+        return contentRepository.existsByTitleAndReleaseYear(title, releaseYear);
+    }
+
     public Content createContent(String title, ContentType type, Integer releaseYear, String description, List<String> genreNames) {
         Content content = new Content();
 

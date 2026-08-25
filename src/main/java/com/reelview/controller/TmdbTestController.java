@@ -1,6 +1,7 @@
 package com.reelview.controller;
 
 import com.reelview.client.tmdb.TmdbClient;
+import com.reelview.client.tmdb.TmdbImportResult;
 import com.reelview.client.tmdb.TmdbImportService;
 import com.reelview.client.tmdb.TmdbMovieDto;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class TmdbTestController {
 
     @PostMapping("/import")
     public String importMovies(@RequestParam(defaultValue = "1") int pages) {
-        int count = tmdbImportService.importPopularMovies(pages);
-        return count + "개 작품 등록 완료";
+        TmdbImportResult result = tmdbImportService.importPopularMovies(pages);
+        return result.imported() + "개 작품 등록 완료, " + result.skipped() + "개 중복 건너뜀";
     }
 
 }

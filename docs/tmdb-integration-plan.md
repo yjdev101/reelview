@@ -44,4 +44,8 @@
 ## 상태
 **구현 완료 (2026-08-19)**: `TmdbMovieDto`/`TmdbMovieListResponse`(응답 DTO), `TmdbClient`(RestClient로 `/movie/popular` 호출), `TmdbGenreMapper`(TMDB 장르 ID → 우리 장르명, 17/19 커버 — Animation/TV Movie 제외), `TmdbImportService`(페이지 반복 호출 + `ContentService.createContent()` 저장), `POST /admin/tmdb/import?pages=` 엔드포인트. 실제로 1페이지(20개) import 성공 검증 완료(성인물 1건 발견해 수동 삭제).
 
-다음 개선 과제: 중복 방지, 성인 콘텐츠 필터링, 프로덕션에서 쓸 거면 어트리뷰션 문구.
+**중복 방지 구현 완료 (2026-08-25)**: `ContentRepository.existsByTitleAndReleaseYear()` 추가, `TmdbImportService`가 저장 전에 제목+연도로 존재 여부를 확인해 중복이면 건너뛴다. `POST /admin/tmdb/import`가 등록/건너뜀 개수를 모두 응답에 포함하도록 변경(`TmdbImportResult`). 같은 페이지를 두 번 요청해 1회차 20개 등록/0개 건너뜀, 2회차 0개 등록/20개 건너뜀으로 실제 검증 완료.
+
+**TMDB 어트리뷰션 문구 추가 완료 (2026-08-25)**: 프론트엔드 모든 페이지 하단에 "This product uses the TMDB API but is not endorsed or certified by TMDB." 문구 표시(`api.js`의 `renderFooter()`).
+
+다음 개선 과제: 성인 콘텐츠 필터링(설계 판단 필요 — 사용자와 논의 후 진행 예정).
