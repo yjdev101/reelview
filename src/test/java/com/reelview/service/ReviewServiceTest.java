@@ -25,7 +25,8 @@ class ReviewServiceTest {
     @BeforeEach
     void setUp() {
         reviewRepository = mock(ReviewRepository.class);
-        reviewService = new ReviewService(reviewRepository);
+        ContentService contentService = mock(ContentService.class);
+        reviewService = new ReviewService(reviewRepository, contentService);
     }
 
     private User user(Long id) {
