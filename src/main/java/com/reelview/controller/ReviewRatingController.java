@@ -28,4 +28,16 @@ public class ReviewRatingController {
     public Double getAverageRating(@PathVariable Long reviewId) {
         return reviewRatingService.getAverageRating(reviewId);
     }
+
+    @PutMapping
+    public void updateRating(@PathVariable Long reviewId, @RequestBody RateRequest request, Authentication authentication) {
+        User user = userService.getUserByUsername(authentication.getName());
+        reviewRatingService.updateRating(reviewId, user.getId(), request.getRating());
+    }
+
+    @DeleteMapping
+    public void deleteRating(@PathVariable Long reviewId, Authentication authentication) {
+        User user = userService.getUserByUsername(authentication.getName());
+        reviewRatingService.deleteRating(reviewId, user.getId());
+    }
 }

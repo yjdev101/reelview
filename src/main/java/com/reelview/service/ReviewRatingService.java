@@ -44,4 +44,15 @@ public class ReviewRatingService {
     public Double getAverageRating(Long reviewId) {
         return reviewRatingRepository.findAverageRatingByReviewId(reviewId);
     }
+
+    public ReviewRating updateRating(Long reviewId, Long userId, Integer rating) {
+        ReviewRating reviewRating = reviewRatingRepository.findByReviewIdAndUserId(reviewId, userId).orElseThrow();
+        reviewRating.setRating(rating);
+        return reviewRatingRepository.save(reviewRating);
+    }
+
+    public void deleteRating(Long reviewId, Long userId) {
+        ReviewRating reviewRating = reviewRatingRepository.findByReviewIdAndUserId(reviewId, userId).orElseThrow();
+        reviewRatingRepository.deleteById(reviewRating.getId());
+    }
 }
