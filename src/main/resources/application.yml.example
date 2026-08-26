@@ -17,3 +17,6 @@ jwt:
 
 tmdb:
   api-key: your_tmdb_api_key
+
+file:
+  upload-dir: ./uploads/videos
