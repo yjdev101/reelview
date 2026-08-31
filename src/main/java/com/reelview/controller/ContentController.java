@@ -75,7 +75,7 @@ public class ContentController {
 
     @PutMapping("/{id}")
     public ContentResponse updateContent(@PathVariable Long id, @RequestBody UpdateContentRequest request) {
-        Content content = contentService.updateContent(id, request.getTitle(), request.getType(), request.getReleaseYear(), request.getDescription());
+        Content content = contentService.updateContent(id, request.getTitle(), request.getType(), request.getReleaseYear(), request.getPosterUrl(), request.getDescription());
         return toResponse(content);
     }
 

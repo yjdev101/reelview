@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,8 +23,13 @@ public class ContentService {
         this.genreService = genreService;
     }
 
-    public boolean existsByTmdbId(Long tmdbId) {
-        return contentRepository.existsByTmdbId(tmdbId);
+    public Optional<Content> findByTmdbId(Long tmdbId) {
+        return contentRepository.findByTmdbId(tmdbId);
+    }
+
+    public Content updatePoster(Content content, String posterUrl) {
+        content.setPosterUrl(posterUrl);
+        return contentRepository.save(content);
     }
 
     public Content createContent(Long tmdbId, String title, ContentType type, Integer releaseYear, String posterUrl, String description, List<String> genreNames) {
@@ -68,11 +74,12 @@ public class ContentService {
         return contentRepository.findAllOrderByAverageRatingDesc();
     }
 
-    public Content updateContent(Long id, String title, ContentType type, Integer releaseYear, String description) {
+    public Content updateContent(Long id, String title, ContentType type, Integer releaseYear, String posterUrl, String description) {
         Content content = contentRepository.findById(id).orElseThrow();
         content.setTitle(title);
         content.setType(type);
         content.setReleaseYear(releaseYear);
+        content.setPosterUrl(posterUrl);
         content.setDescription(description);
 
         return contentRepository.save(content);

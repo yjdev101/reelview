@@ -10,6 +10,7 @@ public class UpdateContentRequest {
    private String title;
    private ContentType type;
    private Integer releaseYear;
+   private String posterUrl;
    private String description;
 
 }

@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContentRepository extends JpaRepository<Content,Long> {
     List<Content> findByGenres_Name(String genreName, Sort sort);
     List<Content> findByType(ContentType type, Sort sort);
-    boolean existsByTmdbId(Long tmdbId);
+    Optional<Content> findByTmdbId(Long tmdbId);
 
     @Query("SELECT c FROM Content c " +
             "LEFT JOIN Review r ON r.content = c " +
