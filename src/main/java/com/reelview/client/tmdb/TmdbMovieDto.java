@@ -9,6 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 public class TmdbMovieDto {
+
+    private Long id;
+
     private String title;
     private String overview;
 

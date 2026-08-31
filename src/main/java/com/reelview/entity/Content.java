@@ -20,6 +20,9 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private Long tmdbId;
+
     @Column(nullable = false, length = 200)
     private String title;
 

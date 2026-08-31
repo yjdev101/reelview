@@ -29,7 +29,7 @@ public class ContentController {
 
     @PostMapping
     public ContentResponse createContent(@RequestBody CreateContentRequest request) {
-        Content content = contentService.createContent(request.getTitle(), request.getType(), request.getReleaseYear(), request.getDescription(), request.getGenreNames());
+        Content content = contentService.createContent(null, request.getTitle(), request.getType(), request.getReleaseYear(), request.getDescription(), request.getGenreNames());
         return toResponse(content);
     }
 

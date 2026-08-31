@@ -24,13 +24,13 @@ public class TmdbImportService {
             for (TmdbMovieDto movie : movies) {
                 Integer releaseYear = Integer.parseInt(movie.getReleaseDate().substring(0, 4));
 
-                if (contentService.existsByTitleAndReleaseYear(movie.getTitle(), releaseYear)) {
+                if (contentService.existsByTmdbId(movie.getId())) {
                     skipped++;
                     continue;
                 }
 
                 List<String> genreNames = TmdbGenreMapper.toGenreNames(movie.getGenreIds());
-                contentService.createContent(movie.getTitle(), ContentType.MOVIE, releaseYear, movie.getOverview(), genreNames);
+                contentService.createContent(movie.getId(), movie.getTitle(), ContentType.MOVIE, releaseYear, movie.getOverview(), genreNames);
                 imported++;
             }
         }

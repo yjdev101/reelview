@@ -12,7 +12,7 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content,Long> {
     List<Content> findByGenres_Name(String genreName, Sort sort);
     List<Content> findByType(ContentType type, Sort sort);
-    boolean existsByTitleAndReleaseYear(String title, Integer releaseYear);
+    boolean existsByTmdbId(Long tmdbId);
 
     @Query("SELECT c FROM Content c " +
             "LEFT JOIN Review r ON r.content = c " +
