@@ -15,6 +15,7 @@ public class ContentResponse {
     private String title;
     private ContentType contentType;
     private Integer releaseYear;
+    private String posterUrl;
     private String description;
     private LocalDateTime createdAt;
     private List<String> genreNames;

@@ -29,7 +29,7 @@ public class ContentController {
 
     @PostMapping
     public ContentResponse createContent(@RequestBody CreateContentRequest request) {
-        Content content = contentService.createContent(null, request.getTitle(), request.getType(), request.getReleaseYear(), request.getDescription(), request.getGenreNames());
+        Content content = contentService.createContent(null, request.getTitle(), request.getType(), request.getReleaseYear(), request.getPosterUrl(), request.getDescription(), request.getGenreNames());
         return toResponse(content);
     }
 
@@ -89,6 +89,6 @@ public class ContentController {
         for (Genre genre : content.getGenres()) {
             genreNames.add(genre.getName());
         }
-        return new ContentResponse(content.getId(), content.getTitle(), content.getType(), content.getReleaseYear(), content.getDescription(), content.getCreatedAt(), genreNames);
+        return new ContentResponse(content.getId(), content.getTitle(), content.getType(), content.getReleaseYear(), content.getPosterUrl(), content.getDescription(), content.getCreatedAt(), genreNames);
     }
 }

@@ -33,8 +33,12 @@ public class Content {
     @Column(nullable = false)
     private Integer releaseYear;
 
+    @Column(length = 500)
+    private String posterUrl;
+
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
+
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

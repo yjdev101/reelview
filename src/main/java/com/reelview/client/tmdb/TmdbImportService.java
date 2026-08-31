@@ -30,7 +30,7 @@ public class TmdbImportService {
                 }
 
                 List<String> genreNames = TmdbGenreMapper.toGenreNames(movie.getGenreIds());
-                contentService.createContent(movie.getId(), movie.getTitle(), ContentType.MOVIE, releaseYear, movie.getOverview(), genreNames);
+                contentService.createContent(movie.getId(), movie.getTitle(), ContentType.MOVIE, releaseYear, TmdbImageMapper.toPosterUrl(movie.getPosterPath()), movie.getOverview(), genreNames);
                 imported++;
             }
         }

@@ -26,13 +26,14 @@ public class ContentService {
         return contentRepository.existsByTmdbId(tmdbId);
     }
 
-    public Content createContent(Long tmdbId, String title, ContentType type, Integer releaseYear, String description, List<String> genreNames) {
+    public Content createContent(Long tmdbId, String title, ContentType type, Integer releaseYear, String posterUrl, String description, List<String> genreNames) {
         Content content = new Content();
 
         content.setTmdbId(tmdbId);
         content.setTitle(title);
         content.setType(type);
         content.setReleaseYear(releaseYear);
+        content.setPosterUrl(posterUrl);
         content.setDescription(description);
         content.setCreatedAt(LocalDateTime.now());
 

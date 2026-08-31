@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -49,7 +50,7 @@ class TmdbImportServiceTest {
 
         assertEquals(0, result.imported());
         assertEquals(1, result.skipped());
-        verify(contentService, never()).createContent(anyLong(), anyString(), eq(ContentType.MOVIE), eq(2021), anyString(), anyList());
+        verify(contentService, never()).createContent(anyLong(), anyString(), eq(ContentType.MOVIE), eq(2021), isNull(), anyString(), anyList());
     }
 
     @Test
@@ -61,6 +62,6 @@ class TmdbImportServiceTest {
 
         assertEquals(1, result.imported());
         assertEquals(0, result.skipped());
-        verify(contentService).createContent(eq(438631L), eq("듄"), eq(ContentType.MOVIE), eq(2021), anyString(), anyList());
+        verify(contentService).createContent(eq(438631L), eq("듄"), eq(ContentType.MOVIE), eq(2021), isNull(), anyString(), anyList());
     }
 }

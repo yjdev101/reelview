@@ -15,6 +15,9 @@ public class TmdbMovieDto {
     private String title;
     private String overview;
 
+    @JsonProperty("poster_path")
+    private String posterPath;
+
     @JsonProperty("release_date")
     private String releaseDate;
 
