@@ -2,10 +2,12 @@ package com.reelview.controller;
 
 import com.reelview.dto.request.CreateReviewRequest;
 import com.reelview.dto.request.UpdateReviewRequest;
+import com.reelview.dto.response.CommentSummaryResponse;
 import com.reelview.dto.response.ReviewResponse;
 import com.reelview.entity.Content;
 import com.reelview.entity.Review;
 import com.reelview.entity.User;
+import com.reelview.service.CommentSummaryService;
 import com.reelview.service.ContentService;
 import com.reelview.service.ReviewService;
 import com.reelview.service.UserService;
@@ -19,11 +21,13 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
     private final ContentService contentService;
+    private final CommentSummaryService commentSummaryService;
 
-    public ReviewController(ReviewService reviewService, UserService userService, ContentService contentService) {
+    public ReviewController(ReviewService reviewService, UserService userService, ContentService contentService, CommentSummaryService commentSummaryService) {
         this.reviewService = reviewService;
         this.userService = userService;
         this.contentService = contentService;
+        this.commentSummaryService = commentSummaryService;
     }
 
     @PostMapping
@@ -58,5 +62,11 @@ public class ReviewController {
     public void deleteReview(@PathVariable Long id, Authentication authentication) {
         User requestUser = userService.getUserByUsername(authentication.getName());
         reviewService.deleteReview(id, requestUser);
+    }
+
+    @GetMapping("/{id}/comment-summary")
+    public CommentSummaryResponse getCommentSummary(@PathVariable Long id) {
+        String summary = commentSummaryService.getOrGenerateSummary(id);
+        return new CommentSummaryResponse(summary);
     }
 }
