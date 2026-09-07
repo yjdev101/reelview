@@ -4,6 +4,7 @@ import com.reelview.entity.Content;
 import com.reelview.entity.ContentType;
 import com.reelview.entity.Genre;
 import com.reelview.repository.ContentRepository;
+import com.reelview.repository.ReviewRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,12 @@ import java.util.Set;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final GenreService genreService;
+    private final ReviewRepository reviewRepository;
 
-    public ContentService(ContentRepository contentRepository, GenreService genreService) {
+    public ContentService(ContentRepository contentRepository, GenreService genreService, ReviewRepository reviewRepository) {
         this.contentRepository = contentRepository;
         this.genreService = genreService;
+        this.reviewRepository = reviewRepository;
     }
 
     public Optional<Content> findByTmdbId(Long tmdbId) {
@@ -86,6 +89,9 @@ public class ContentService {
     }
 
     public void deleteContent(Long id) {
+        if (reviewRepository.existsByContentId(id)) {
+            throw new IllegalArgumentException("리뷰가 존재해서 삭제할 수 없습니다.");
+        }
         contentRepository.deleteById(id);
     }
 }

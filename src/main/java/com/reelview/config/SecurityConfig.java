@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/contents").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/contents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/contents/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint(authenticationEntryPoint)

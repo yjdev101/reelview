@@ -4,6 +4,7 @@ import com.reelview.dto.request.RateRequest;
 import com.reelview.entity.User;
 import com.reelview.service.ReviewRatingService;
 import com.reelview.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ReviewRatingController {
     }
 
     @PostMapping
-    public void rate(@PathVariable Long reviewId, @RequestBody RateRequest request, Authentication authentication) {
+    public void rate(@PathVariable Long reviewId, @Valid @RequestBody RateRequest request, Authentication authentication) {
         User user = userService.getUserByUsername(authentication.getName());
         reviewRatingService.rate(reviewId, user.getId(), request.getRating());
     }
@@ -30,7 +31,7 @@ public class ReviewRatingController {
     }
 
     @PutMapping
-    public void updateRating(@PathVariable Long reviewId, @RequestBody RateRequest request, Authentication authentication) {
+    public void updateRating(@PathVariable Long reviewId, @Valid @RequestBody RateRequest request, Authentication authentication) {
         User user = userService.getUserByUsername(authentication.getName());
         reviewRatingService.updateRating(reviewId, user.getId(), request.getRating());
     }
