@@ -26,3 +26,13 @@ anthropic:
 
 file:
   upload-dir: ./uploads/videos
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+
+monitoring:
+  username: prometheus
+  password: your_monitoring_password

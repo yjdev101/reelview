@@ -60,6 +60,16 @@
 - k6 자체 JS 문법을 새로 익혀야 함 (간단하지만 학습 비용 존재)
 - 부하테스트는 수치를 뽑는 것 자체가 목적이 아니라 병목을 찾고 개선하는 데까지 이어져야 의미가 있음 — 오늘 발견한 JWT 3중 파싱 이슈가 실제 부하 상황에서 얼마나 영향을 주는지 확인하는 용도로 연결할 예정
 
-**상태**: 계획 단계 (2026-09-07 작성, 미구현). 다음 단계: 모니터링 적용 설계 1~3번부터 순서대로 진행.
+**상태 (2026-09-09 갱신)**: 모니터링 적용 설계 1~3번 완료. 3번은 애초 계획했던 `hasRole("ADMIN")` 대신, `/actuator/**`를 `@Order(1)` 전용 `SecurityFilterChain`으로 분리해 `httpBasic()` + 별도 `monitoring` 계정(`InMemoryUserDetailsManager`)으로 인증하는 방식으로 변경 — Prometheus 스크레이핑 트레이드오프(아래)를 4단계까지 안 미루고 여기서 바로 해결.
+
+이 전용 체인에는 메인 체인의 `jwtAuthenticationFilter`가 적용되지 않으므로(필터는 체인별로 등록됨), 기존 로그인 JWT로는 ADMIN 계정이라도 `/actuator/**`에 접근 불가 — `monitoring` 계정의 Basic Auth로만 접근 가능하도록 완전히 격리됨. 로컬 검증 완료:
+
+| 시나리오 | 결과 |
+|---|---|
+| 인증 없음 | 401 |
+| `monitoring` 계정 Basic Auth | 200, `{"status":"UP"}` |
+| 기존 ADMIN JWT | 401 (이 체인엔 JWT 필터가 없어서) |
+
+다음 단계: 4번(Docker Compose로 Prometheus + Grafana 실행)부터 이어서 진행. Prometheus가 `/actuator/prometheus`를 스크레이핑할 땐 `prometheus.yml`의 `basic_auth` 설정으로 `monitoring` 계정 자격증명을 넣어주면 됨.
 
 ---
