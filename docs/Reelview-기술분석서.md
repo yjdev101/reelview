@@ -70,6 +70,8 @@
 | `monitoring` 계정 Basic Auth | 200, `{"status":"UP"}` |
 | 기존 ADMIN JWT | 401 (이 체인엔 JWT 필터가 없어서) |
 
-다음 단계: 4번(Docker Compose로 Prometheus + Grafana 실행)부터 이어서 진행. Prometheus가 `/actuator/prometheus`를 스크레이핑할 땐 `prometheus.yml`의 `basic_auth` 설정으로 `monitoring` 계정 자격증명을 넣어주면 됨.
+**상태 (2026-09-09 추가 갱신)**: 4~6번 완료. `docker-compose.yml`로 Prometheus + Grafana 컨테이너를 로컬에 띄우고, `prometheus.yml`(실제 자격증명 포함 파일은 gitignore 처리, `.example` 파일로 대체)에 `monitoring` 계정 Basic Auth로 `host.docker.internal:8080/actuator/prometheus`를 스크레이핑 대상으로 등록. Prometheus Targets에서 `health: up` 확인, Grafana에 Prometheus 데이터소스 연결 후 health check `Successfully queried the Prometheus API` 확인 완료.
+
+다음 단계: Grafana 대시보드(JVM 메모리·HTTP 요청수/응답시간·DB 커넥션풀) 패널 구성, 이후 k6 부하테스트 스크립트 작성 및 실행.
 
 ---
