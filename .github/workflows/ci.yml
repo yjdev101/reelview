@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: reelview
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # application.yml은 git에 없으므로 예시 파일에서 만든다 (외부 API 키는 테스트에 필요 없음)
+      - name: Create application.yml for CI
+        run: |
+          cp src/main/resources/application.yml.example src/main/resources/application.yml
+          sed -i 's/your_db_password/root/' src/main/resources/application.yml
+          sed -i 's/your_jwt_secret_key_here/ci-only-jwt-secret-key-0123456789abcdef/' src/main/resources/application.yml
+
+      - name: Test
+        run: ./gradlew test --console=plain
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: build/reports/tests/test
