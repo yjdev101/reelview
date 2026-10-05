@@ -2,6 +2,7 @@ package com.reelview.controller;
 
 import com.reelview.entity.*;
 import com.reelview.security.JwtUtil;
+import com.reelview.service.CommentSummaryService;
 import com.reelview.service.ContentService;
 import com.reelview.service.ReviewService;
 import com.reelview.service.UserService;
@@ -31,6 +32,9 @@ public class ReviewControllerTest {
 
     @MockitoBean
     private ContentService contentService;
+
+    @MockitoBean
+    private CommentSummaryService commentSummaryService;
 
     @MockitoBean
     private JwtUtil jwtUtil;
