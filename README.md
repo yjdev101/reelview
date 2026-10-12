@@ -88,9 +88,9 @@ monitoring:
 http://localhost:8080/swagger-ui/index.html
 ```
 
-1. `/users/login`으로 로그인해서 토큰 발급 (테스트 계정: `testuser_0727` / `testpass1`, ADMIN 권한)
+1. `/users/register`로 회원가입한 뒤 `/users/login`으로 로그인해서 토큰 발급
 2. Swagger UI 우측 상단 `Authorize`에 `Bearer <발급받은 토큰>` 형식으로 입력
-3. 이제 인증이 필요한 API(리뷰 등록, 평점 등록, 관리자 API 등)도 테스트 가능
+3. 이제 인증이 필요한 API(리뷰 등록, 평점 등록 등)도 테스트 가능 (관리자 API는 로컬 DB에서 role을 ADMIN으로 바꿔 테스트)
 
 ### 5. (선택) 모니터링 대시보드 실행
 
